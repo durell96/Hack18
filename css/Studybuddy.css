@@ -10,7 +10,7 @@
     padding-bottom:5%;
   
 }
-#createsession {
+#createSession {
     float: left;
     font-family: Courier New;
     font-size: 30px;
@@ -23,7 +23,7 @@
 }
 #title {
    font-family:Courier New;
-   font-size: 90px;
+   font-size: 70px;
    text-align:center;
    margin-top:02%;
    font-weight:bold;
