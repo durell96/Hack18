@@ -1,8 +1,8 @@
-﻿#content {
+﻿
+#content {
     background-color: #ffffff;
     margin-right: 200px;
-    margin-left: 1
-    00px;    
+    margin-left:100px;
 }
 #topBar {
     width: 100%;
@@ -36,22 +36,33 @@
     margin-top:-2%; 
 }
 tr {
+	
     background-color: goldenrod;  
+	
 }
 td {   
+	
     font-size: 30px;
     font-family: Courier New;
     padding: 5px;
     font-weight: bold;
     border: 5px solid;
+	
+	
 }
 #sessiontable {
+	
     background-color:black;
-    overflow-y: scroll;
-    height: 700px;
+    height:78.5vh;
+	overflow-y:scroll;
     width: 70%;
+	
 }
 
 #sessions {
+
    width:100%;
+   
+   
+  
 }
