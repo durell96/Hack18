@@ -25,9 +25,10 @@
 		$eventlist[] = $row;
 		
 	}
-	return $eventlist;
+	
 	
 	mysqli_close($db);
+	return json_encode($eventlist);
 	} 
-	
+	selectEvent();
   	?>
