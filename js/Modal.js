@@ -15,26 +15,27 @@ function sendToDatabase() {
     $.ajax({
         async: true,
         type: "POST",
-        url: "dbconnection.php",
+        url: "php/dbconnection.php",
         dataType:'json',
-        data:{ functionname: 'addEvent', arguments: args},
-        success: function (obj, textstatus){
-          if (!('error' in obj)){
-            var prizeData = obj.result;
-            populateTable();
-          }
-          else{
-            console.log(obj.error);
-          }
+        data:{details: args},
+        success: function (){
+          console.log('success')
         }
     });   
 
 }
 
 function populateTable() {
-
-    var myTable = document.getElementById("")
-
-
-
+    var myTable = document.getElementById("sessions");
+	$.ajax({
+	url:'php/dbresult.php',
+	type:'GET',
+	dataType: "json",
+	success: function(response){
+	var data = response;
+	console.log(data);
 }
+});
+	
+}
+
