@@ -1,20 +1,40 @@
 // JavaScript source code
-function openCreateSession(){
+function sendToDatabase() {
 
-    jQuery.noConflict();
-    console.log("Opening the modal");
-    $("#myModal").modal('show');
+    var classVar = document.forms["addingEvent"]["className"].value;
+    var assignmentVar = document.forms["addingEvent"]["assignment"].value;
+    var dateVar = document.forms["addingEvent"]["assignmentDate"].value;
+    var timeVar = document.forms["addingEvent"]["assignmentTime"].value;
+    timeVar = timeVar + ":00";
+    var locationVar = document.forms["addingEvent"]["location"].value;
+    var professorVar = document.forms["addingEvent"]["professor"].value;
+    var descriptionVar = document.forms["addingEvent"]["description"].value;
+
+    var args = [classVar,assignmentVar,dateVar, timeVar, locationVar, professorVar, descriptionVar];
+    console.log(args);
+    $.ajax({
+        async: true,
+        type: "POST",
+        url: "dbconnection.php",
+        dataType:'json',
+        data:{ functionname: 'addEvent', arguments: args},
+        success: function (obj, textstatus){
+          if (!('error' in obj)){
+            var prizeData = obj.result;
+            populateTable();
+          }
+          else{
+            console.log(obj.error);
+          }
+        }
+    });   
 
 }
 
-function addEvent() {
-    var classRegex = /[A-Z]{2,4}[0-9]{3}/i;
-    var classVariable = document.forms["addingEvent"]["class"].value;
-    classVariable = classVariable.toUpperCase();
-    classVariable = classVariable.replace(/ /g,'');
-    console.log(classVariable)
-    if (!classRegex.test(classVariable)){
-        alert("Invalid")
-    }
+function populateTable() {
+
+    var myTable = document.getElementById("")
+
+
 
 }

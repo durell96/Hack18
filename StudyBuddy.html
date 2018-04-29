@@ -13,6 +13,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/Modal.js" type="text/js"></script>
+    <?php
+        $db = mysqli_connect("studentdb-maria.gl.umbc.edu","ds14","ds14","ds14"); 
+        $constructed_query = "SELECT * FROM studyevent";
+        $result = mysqli_query($db,$constructed_query);
+    ?>
 </head>
 <body id="content">
     <div id="topBar" >
@@ -34,30 +39,30 @@
                                 <div class="form-group col-md-1">
                                 </div>
                                 <div class="form-group col-md-5">
-                                    <label for="class"> Class: </label> 
-                                    <input class="form-control" type="text" id="class" required><br>
+                                    <label for="className"> Class: </label> 
+                                    <input class="form-control" type="text" id="className" required><br>
                                     <label for="assignment"> Assignment: </label> 
                                     <input class="form-control" type="text" id="assignment" required><br>
                                     <label for="assignmentDate"> Date: </label> 
-                                    <input class="form-control" type="date" id="assignmentDate" min="<?php echo date('Y-m-d'); ?>" required><br>
+                                    <input class="form-control" type="date" id="assignmentDate" required><br>
                                     <label for="assignmentTime"> Time: </label>
-                                    <input class="form-control" type="time" id="assignmentTime"><br>
+                                    <input class="form-control" type="time" id="assignmentTime" required><br>
                                 </div>
                                 <div class="form-group col-md-1">
                                 </div>
                                 <div class="form-group col-md-5">
                                     <label for="Location"> Location: </label> 
-                                    <input class="form-control" type="text" id="Location" required><br>
+                                    <input class="form-control" type="text" id="location" required><br>
                                     <label for="professor"> Professor: </label> 
                                     <input class="form-control" type="text" id="professor" required><br>
                                     <label for="description"> Description: </label> 
                                     <textarea class="form-control" id="description" style="width:350px;height:100px;"></textarea>
                                 </div>
                             </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-default" id="submitAddSession">Submit</button>
+                            </div>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" id="submitAddSession" data-dismiss="modal">Submit</button>
                     </div>
                 </div>
             </div>
@@ -65,45 +70,50 @@
     </div>
     <div id="sessiontable">
         <table id="sessions" >
-
+            <?php
+                while ($row = mysql_fetch_array($result)) { ?>
                 <tr>
-                    <td style="white-space:pre-wrap; word-wrap:break-word">Class: CMSC 201
-Assignments: Project 2
-Date:4/27/2018 Time:3:00PM</td>
+                    <td style="white-space:pre-wrap; word-wrap:break-word">Class: <?php echo $row['class']; ?>
+Assignments: <?php echo $row['assignments']; ?>
+Date: <?php echo $row['date']; ?> Time: <?php echo $row['time']; ?></td>
                 </tr>
-                <tr>
-                    <td style="white-space:pre-wrap; word-wrap:break-word">Class: CMSC 201
-Assignments: Project 2
-Date:4/27/2018 Time:3:00PM</td>
-                </tr>
-                <tr>
-                    <td style="white-space:pre-wrap; word-wrap:break-word">Class: CMSC 201
-Assignments: Project 2
-Date:4/27/2018 Time:3:00PM</td>
-                </tr>
-                <tr>
-                    <td style="white-space:pre-wrap; word-wrap:break-word">Class: CMSC 201
-Assignments: Project 2
-Date:4/27/2018 Time:3:00PM</td>
-                </tr>
-                <tr>
-                    <td style="white-space:pre-wrap; word-wrap:break-word">Class: CMSC 201
-Assignments: Project 2
-Date:4/27/2018 Time:3:00PM</td>
-                </tr>
-                <tr>
-                    <td style="white-space:pre-wrap; word-wrap:break-word">Class: CMSC 201
-Assignments: Project 2
-Date:4/27/2018 Time:3:00PM</td>
-                </tr>
-
+            <?php
+            } ?>
            
         </table>
     
     </div> <!--End of top bar-->
     <script src="js/Modal.js"></script>
     <script type="text/javascript">
-        document.getElementById("submitAddSession").addEventListener("click", addEvent);    
+        $('#addingEvent').submit(function(e) { 
+        var classRegex = /[A-Z]{2,4}[0-9]{3}/i;
+        var classVariable = document.forms["addingEvent"]["className"].value;
+        classVariable = classVariable.toUpperCase();
+        classVariable = classVariable.replace(/ /g,'');
+        if (!classRegex.test(classVariable)){
+            alert("Invalid Class Name: Must be 2-4 letters and 3 numbers.")
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            return false;
+        }
+
+        // Check if the date is valid
+        var dateVar = document.forms["addingEvent"]["assignmentDate"].value;
+        var now = new Date();
+        now = Number(now);
+        dateVar = Number(new Date(dateVar));
+        var dateDifference = now - dateVar;
+        if (now - dateVar > 0) {
+            alert("Please enter a valid date! Must not be before today.");
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            return false;
+        }
+
+        sendToDatabase()
+        return true;
+        
+        } );
     </script>
 
 </body>
